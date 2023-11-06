@@ -12,33 +12,6 @@ class Conexion:
     self.conn = sqlite3.connect("petpals.db")
     self.cursor = self.conn.cursor()
 
- def validar_datos(self, data, tipo):
-   if tipo == 'dueno':
-     if 'nombre_dueno' not in data or 'direccion_dueno' not in data or 'mascota_id' not in data:
-       return False
-
-   elif tipo == 'mascota':
-     if 'nombre_mascota' not in data or 'raza_mascota' not in data or 'edad' not in data or 'cuidador_id' not in data:
-      return False
-  
-   elif tipo == 'cuidador':
-      if 'nombre_cuidador' not in data or 'direccion_cuidador' not in data:
-       return False
-
-   else:
-     return False
-   return True
-
- def close(self):
-    self.conn.commit()
-    self.conn.close()
-
-def get_json(data):
- return request.get_json()
-
-def generar_respuesta(mensaje):
-  return {'message': mensaje}
-  
 app = Flask(__name__)
 
 @app.route('/', methods=["GET","POST"])
@@ -68,34 +41,59 @@ raza=raza, edad=edad))
 def cuidador():
     if request.method == "POST":
         cuidador = Cuidador()
-        Ucuidador = request.form["Ucuidador"]
-        Ccuidador = request.form["Ccuidador"]
+        usuario2 = request.form["usuario2"]
+        contrasena2 = request.form["contrasena2"]
         direccion = request.form["direccion"]
 
-        cuidador.registrar_cuidador(Ucuidador, Ccuidador, direccion)
-      
-        return redirect(url_for('resultados', Ucuidador=Ucuidador, Ccuidador=Ccuidador,direccion=direccion))
+        cuidador.registrar_cuidador(usuario2, contrasena2, direccion)
+
+        return redirect(url_for('resultados', usuario2=usuario2, contrasena2=contrasena2,direccion=direccion))
     return render_template("cuidador.html")
 
-@app.route('/resultados', methods=["GET","POST"])
-def resultados():
-        usuario = request.form.get("usuario", "")
-        contrasena = request.form.get("contrasena", "")
-        nombre_mascota = request.form.get("nombre_mascota", "")  
-        raza = request.form.get("raza", "")
-        edad = request.form.get("edad", "")
-        Ucuidador = request.args.get('Ucuidador', "")
-        Ccuidador= request.args.get('Ccuidador',"")
-        direccion = request.args.get('direccion',"")
 
-        return render_template("resultados.html", usuario=usuario,     contrasena=contrasena,nombre_mascota=nombre_mascota,
-raza=raza, edad=edad, Ucuidador=Ucuidador, Ccuidador=Ccuidador,
-direccion=direccion)
+@app.route('/resultados', methods=["GET"])
+def resultados():
+    usuario = request.args.get('usuario')
+    contrasena = request.args.get('contrasena')
+    nombre_mascota = request.args.get('nombre_mascota')
+    raza = request.args.get('raza')
+    edad = request.args.get('edad') 
+    usuario2 = request.args.get('usuario2')
+    contrasena2 = request.args.get('contrasena2')
+    direccion = request.args.get('direccion')
+
+    return render_template("resultados.html", usuario=usuario, contrasena=contrasena, nombre_mascota=nombre_mascota,
+                           raza=raza, edad=edad, usuario2=usuario2, contrasena2=contrasena2,
+                           direccion=direccion)
   
 if __name__ == '__main__':  
  app.run(host='0.0.0.0', port=81, debug=True)
 
+ #def validar_datos(self, data, tipo):
+   #if tipo == 'dueno':
+    # if 'nombre_dueno' not in data or 'direccion_dueno' not in data or 'mascota_id' not in #data:
+ #      return False
 
+#   elif tipo == 'mascota':
+ #    if 'nombre_mascota' not in data or 'raza_mascota' not in data or 'edad' not in data or #'cuidador_id' not in data:
+ #     return False
+  
+  # elif tipo == 'cuidador':
+   #   if 'nombre_cuidador' not in data or 'direccion_cuidador' not in data:
+    #   return False
+
+ #  else:
+  #return True
+
+ #def close(self):
+  #  self.conn.commit()
+   # self.conn.close()
+
+#def get_json(data):
+ #return request.get_json()
+
+#def generar_respuesta(mensaje):
+ # return {'message': mensaje}
 #data = get_json(request.data)
 #if not conn.validar_datos(data, 'dueno'):
  #  return generar_respuesta('Los datos son inválidos')
