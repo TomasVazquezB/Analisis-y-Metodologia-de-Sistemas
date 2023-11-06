@@ -77,7 +77,7 @@ def cuidador():
         return redirect(url_for('resultados', Ucuidador=Ucuidador, Ccuidador=Ccuidador,direccion=direccion))
     return render_template("cuidador.html")
 
-@app.route('/resultados',)
+@app.route('/resultados', methods=["GET","POST"])
 def resultados():
         usuario = request.form.get("usuario", "")
         contrasena = request.form.get("contrasena", "")
