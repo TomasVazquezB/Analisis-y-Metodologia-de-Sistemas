@@ -58,7 +58,7 @@ def index():
         dueño_mascota.registrar_dueno(usuario, contrasena)
         dueño_mascota.registrar_mascota(nombre_mascota, raza, edad)
     
-        return redirect(url_for('resultados', usuario=usuario, contrasena=contrasena,nombre_mascota=nombre_mascota,
+        return redirect(url_for('cuidador', usuario=usuario, contrasena=contrasena,nombre_mascota=nombre_mascota,
 raza=raza, edad=edad))
     return render_template("index.html")
   
