@@ -7,13 +7,15 @@
   <title>Resultados</title>
 </head>
   <body>
-    <h1>Datos recibidos</h1>
     <h2>Datos del dueño y la mascota</h2>
-    <p>Nombre del dueño: {{ usuario }}</p>
-    <p>Contraseña: {{ contrasena }}</p>
-    <p>Nombre de la mascota: {{ nombre_mascota }}</p>
-    <p>Raza: {{ raza }}</p>
-    <p>Edad: {{ edad }}</p>
+    {% for data in data_storage %}
+      
+      <p>Nombre del dueño: {{ data.usuario }}</p>
+      <p>Contraseña: {{ data.contrasena }}</p>
+      <p>Nombre de la mascota: {{ data.nombre_mascota }}</p>
+      <p>Raza: {{ data.raza }}</p>
+      <p>Edad: {{ data.edad }}</p>
+    {% endfor %}
     <h2>Datos del cuidador</h2>
     <p>Nombre del cuidador: {{ usuario2 }}</p>
     <p>Contraseña: {{ contrasena2 }}</p>

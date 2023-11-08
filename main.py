@@ -39,6 +39,8 @@ class Conexion:
      
 app = Flask(__name__)
 
+data_storage = []
+
 @app.route('/', methods=["GET","POST"])
 def index():
     if request.method == "POST":
@@ -57,9 +59,18 @@ def index():
         dueño_mascota.create_dueno_table()
         dueño_mascota.registrar_dueno(usuario, contrasena)
         dueño_mascota.registrar_mascota(nombre_mascota, raza, edad)
-    
-        return redirect(url_for('cuidador', usuario=usuario, contrasena=contrasena,nombre_mascota=nombre_mascota,
-raza=raza, edad=edad))
+
+        data_storage.append({
+            'usuario': usuario,
+            'contrasena': contrasena,
+            'nombre_mascota': nombre_mascota,
+            'raza': raza,
+            'edad': edad
+        })
+
+      
+      
+        return redirect(url_for('cuidador', data_storage=data_storage))
     return render_template("index.html")
   
 @app.route('/cuidador', methods=["GET","POST"])
@@ -86,8 +97,7 @@ def resultados():
     contrasena2 = request.args.get('contrasena2')
     direccion = request.args.get('direccion')
 
-    return render_template("resultados.html",usuario=usuario, contrasena=contrasena,nombre_mascota=nombre_mascota,
-raza=raza,edad=edad,usuario2=usuario2,contrasena2=contrasena2,direccion=direccion)
+    return render_template("resultados.html",data_storage=data_storage,usuario2=usuario2,contrasena2=contrasena2,direccion=direccion)
   
 if __name__ == '__main__':  
  app.run(host='0.0.0.0', port=81, debug=True)
