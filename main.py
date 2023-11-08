@@ -5,6 +5,7 @@ from clases.cuidador import Cuidador
 from clases.mascotaydueño import dueñoymascota
 import sqlite3
 
+
 def __init__(self):
     self.conn = sqlite3.connect("petpals.db")
     self.cursor = self.conn.cursor()
@@ -42,11 +43,11 @@ app = Flask(__name__)
 def index():
     if request.method == "POST":
         dueño_mascota = dueñoymascota()
-        ##usuario = request.form["usuario"]
+        #usuario = request.form["usuario"]
         usuario = request.form.get("usuario", "")
-        ##contrasena = request.form["contrasena"]
+        #contrasena = request.form["contrasena"]
         contrasena = request.form.get("contrasena", "")
-        ##nombre_mascota = request.form["nombre de la mascota"]
+        #nombre_mascota = request.form["nombre_mascota"]
         nombre_mascota = request.form.get("nombre_mascota", "")  
         #raza = request.form["raza"]
         raza = request.form.get("raza", "")
@@ -60,35 +61,33 @@ def index():
         return redirect(url_for('resultados', usuario=usuario, contrasena=contrasena,nombre_mascota=nombre_mascota,
 raza=raza, edad=edad))
     return render_template("index.html")
-
+  
 @app.route('/cuidador', methods=["GET","POST"])
 def cuidador():
     if request.method == "POST":
         cuidador = Cuidador()
-        usuario2 = request.form["usuario2"]
-        contrasena2 = request.form["contrasena2"]
-        direccion = request.form["direccion"]
+        usuario2 = request.form.get("usuario2","")
+        contrasena2 = request.form.get("contrasena2","")
+        direccion = request.form.get("direccion","")
 
         cuidador.registrar_cuidador(usuario2, contrasena2, direccion)
 
         return redirect(url_for('resultados', usuario2=usuario2, contrasena2=contrasena2,direccion=direccion))
     return render_template("cuidador.html")
 
-
-@app.route('/resultados', methods=["GET"])
+@app.route('/resultados', methods=["GET","POST"])
 def resultados():
     usuario = request.args.get('usuario')
     contrasena = request.args.get('contrasena')
     nombre_mascota = request.args.get('nombre_mascota')
     raza = request.args.get('raza')
     edad = request.args.get('edad') 
-    usuario2 = request.form.get('usuario2')
-    contrasena2 = request.form.get('contrasena2')
-    direccion = request.form.get('direccion')
+    usuario2 = request.args.get('usuario2')
+    contrasena2 = request.args.get('contrasena2')
+    direccion = request.args.get('direccion')
 
-    return render_template("resultados.html", usuario=usuario, contrasena=contrasena, nombre_mascota=nombre_mascota,
-                           raza=raza, edad=edad, usuario2=usuario2, contrasena2=contrasena2,
-                           direccion=direccion)
+    return render_template("resultados.html",usuario=usuario, contrasena=contrasena,nombre_mascota=nombre_mascota,
+raza=raza,edad=edad,usuario2=usuario2,contrasena2=contrasena2,direccion=direccion)
   
 if __name__ == '__main__':  
  app.run(host='0.0.0.0', port=81, debug=True)
