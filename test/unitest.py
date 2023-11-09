@@ -1,6 +1,7 @@
 import unittest
+import sys
+sys.path.append('/home/runner/TP-Analisis-y-Metodologia-de-Sistemas')
 from main import Conexion
-
 
 class TestConexion(unittest.TestCase):
 

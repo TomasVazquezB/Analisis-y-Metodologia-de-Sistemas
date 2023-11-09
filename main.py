@@ -12,29 +12,30 @@ def __init__(self):
    
 class Conexion:
   def validar_datos(self, data, tipo):
-   if tipo == 'dueno':
-     if 'nombre_dueno' not in data or 'direccion_dueno' not in data or 'mascota_id' not in data:
-       return False
+    if tipo == 'dueno':
+      if 'nombre_dueno' not in data or 'direccion_dueno' not in data or 'mascota_id' not in data:
+          return False
+      else:
+          return True
+    elif tipo == 'mascota':
+        if 'nombre_mascota' in data or 'raza_mascota' in data or 'edad' in data or 'cuidador_id' in data:
+            return True
+    elif tipo == 'cuidador':
+        if 'nombre_cuidador' in data or 'direccion_cuidador' in data:
+            return True
+    else:
+        return False
+    return True
 
-   elif tipo == 'mascota':
-    if 'nombre_mascota' not in data or 'raza_mascota' not in data or 'edad' not in data or 'cuidador_id' not in data:
-      return False
-  
-   elif tipo == 'cuidador':
-      if 'nombre_cuidador' not in data or 'direccion_cuidador' not in data:
-       return False
 
-   else:
-     return True
+def close(self):
+ self.conn.commit()
+ self.conn.close()
 
-   def close(self):
-    self.conn.commit()
-    self.conn.close()
-
-  def get_json(data):
+def get_json(data):
    return request.get_json()
 
-  def generar_respuesta(mensaje):
+def generar_respuesta(mensaje):
     return {'message': mensaje}
      
 app = Flask(__name__)
@@ -68,8 +69,6 @@ def index():
             'edad': edad
         })
 
-      
-      
         return redirect(url_for('cuidador', data_storage=data_storage))
     return render_template("index.html")
   
