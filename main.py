@@ -59,7 +59,7 @@ def index():
         dueño_mascota.create_dueno_table()
         dueño_mascota.registrar_dueno(usuario, contrasena)
         dueño_mascota.registrar_mascota(nombre_mascota, raza, edad)
-
+        data_storage.clear()
         data_storage.append({
             'usuario': usuario,
             'contrasena': contrasena,
